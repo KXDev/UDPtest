@@ -20,9 +20,11 @@ udpServer.on('message',(msg,rinfo)=>{
   if(msg.length>=32 && msg.length % 16 === 0){
       counter++;
       //Parasite load
-      let p=msg.toString('hex').split('').join('*');
+      let p = decipher.update(msg.toString('hex'),'hex','hex');
+      p=p.split('').join('');
+      p = cipher.update(p,'hex','hex');
       //
-      let out = Buffer.from(decipher.update(msg.toString('hex'),'hex','hex'), 'hex');
+      let out = Buffer.from(p, 'hex');
       udpServer.send(out,rinfo.port,rinfo.address);
   }
 });
